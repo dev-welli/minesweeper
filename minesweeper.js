@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', startGame)
  var boardSize = 5
  var bombAmount = 6
 
+ //variables to define the sounds
+ var soundApplause = new Audio("sounds/correct-answer-bell-and-applause.mp3")
+ var soundExplosion = new Audio("sounds/cartoon-bomb-explosion.mp3")
+ var soundClick = new Audio("sounds/mouse-click.mp3")
+ var soundFlag = new Audio("sounds/correct-answer.mp3")
+
  createBoard() 
  board.cells[2].isMine = true
  plantMines() 
@@ -40,8 +46,11 @@ document.addEventListener('DOMContentLoaded', startGame)
  }
  
 function startGame () {
+  document.addEventListener('click', checkForLose);
   document.addEventListener('click',checkForWin);
   document.addEventListener('contextmenu',checkForWin);
+  document.addEventListener('click', leftClick);  // When left click, call function to make "left click" sound.
+  document.addEventListener('contextmenu', rightClick)  // When right click, call function to make "right click" sound.
 
   //adding the result of countSurroundingMines as a new property to the board.cells object
   for (i = 0; i < board.cells.length; i++){
@@ -52,15 +61,27 @@ function startGame () {
   lib.initBoard()
 }
 
+
 //refresh the webpage to re-initialize the board
 function restart (){
   document.location.reload()
 }
 
+//play this sound when revealing a cell
+function leftClick(){
+  soundClick.play()
+}
 
-// Define this function to look for a win condition:
+//play this sound when flagging a cell
+function rightClick(){
+  soundFlag.play()
+}
+
+
+
+
+//function to look for a win condition:
 function checkForWin () {
-
   for (var i = 0; i < board.cells.length; i++){//checking the status of each cells
     if (board.cells[i].isMine){
       if (board.cells[i].isMarked === false){
@@ -74,7 +95,17 @@ function checkForWin () {
 
   //if all mines have been marked and no cells are hidden, game is won
   lib.displayMessage('You win!')
+  soundApplause.play()
+}
 
+//function to look for a lose condition -> an exposed mine
+function checkForLose(){
+  for (var i = 0; i < board.cells.length; i++){
+    if (board.cells[i].isMine){
+      if (board.cells[i].hidden === false)
+        return soundExplosion.play();
+    }
+  }
 }
 
 // Define this function to count the number of mines around the cell
