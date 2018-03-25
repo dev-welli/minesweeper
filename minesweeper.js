@@ -1,16 +1,43 @@
 document.addEventListener('DOMContentLoaded', startGame)
 
 // Define your `board` object here!
+ var board = {cells: []} 
+ var boardSize = 5
+ var bombAmount = 6
 
-  var board = {
-    cells: [
-      {row: 0, col: 0, isMine: false, isMarked: false, hidden: true}, {row: 0, col: 1, isMine: true, isMarked: false, hidden: true}, 
-      {row: 0, col: 2, isMine: false, isMarked: false, hidden: true}, {row: 1, col: 0, isMine: true, isMarked: false, hidden: true}, 
-      {row: 1, col: 1, isMine: false, isMarked: false, hidden: true}, {row: 1, col: 2, isMine: true, isMarked: false, hidden: true},
-      {row: 2, col: 0, isMine: false, isMarked: false, hidden: true}, {row: 2, col: 1, isMine: true, isMarked: false, hidden: true}, 
-      {row: 2, col: 2, isMine: false, isMarked: false, hidden: true}
-    ]
-  }
+ createBoard() 
+ board.cells[2].isMine = true
+ plantMines() 
+ 
+ //generate the board object and 'push' the cell properties
+ function createBoard() {
+   for (var x = 0; x < boardSize; x++) {
+     for (var y = 0; y < boardSize; y++) {
+       board.cells.push(
+         {
+            row: x,
+            col: y,
+            isMine: false,
+            isMarked: false,
+            hidden: true
+          }
+        )
+     }  
+   }
+ }
+
+ function getRandomNumber()
+ {
+     return Math.floor((Math.random() * board.cells.length)) ;
+ }
+
+//Planting mines inside random cells
+ function plantMines(){
+    for (var i = 0; i < bombAmount; i++){
+      cellNumber = getRandomNumber()
+      board.cells[cellNumber].isMine = true
+    }
+ }
  
 function startGame () {
   document.addEventListener('click',checkForWin);
