@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', startGame)
 
+
 // Define your `board` object here!
  var board = {cells: []} 
  var boardSize = 5
@@ -11,9 +12,48 @@ document.addEventListener('DOMContentLoaded', startGame)
  var soundClick = new Audio("sounds/mouse-click.mp3")
  var soundFlag = new Audio("sounds/correct-answer.mp3")
 
- createBoard() 
- board.cells[2].isMine = true
- plantMines() 
+
+/* Could not make the level select to work. I think I got the deleting board correct (with 3 different ways on 'advanced' - haven't tried
+the pop() method) but somehow I still got errors that outside the timebox limit. May want to revisit this in the future
+
+function changeLevel(){
+  level = event.target.value;
+  switch(level){
+    case 'beginner':{
+      boardSize = 3;
+      bombAmount = 3;
+      createBoard();
+      plantMines();
+      startGame();
+      break;
+    }
+    case 'intermediate':{
+      boardSize = 4;
+      bombAmount = 5;
+      createBoard(boardSize);
+      plantMines(bombAmount); 
+      startGame();
+      break;
+    }
+    case 'advanced':{
+      //delete board.cells;
+      //board = {cells: []}
+      //board = {cells: [].length=0}
+      //cells.length = 0;
+      boardSize = 5;
+      bombAmount = 13;
+      createBoard(5)
+      plantMines(bombAmount) 
+      startGame()
+      break;
+    }
+  }
+}
+*/
+
+createBoard() 
+plantMines() 
+
  
  //generate the board object and 'push' the cell properties
  function createBoard() {
@@ -76,8 +116,6 @@ function leftClick(){
 function rightClick(){
   soundFlag.play()
 }
-
-
 
 
 //function to look for a win condition:
